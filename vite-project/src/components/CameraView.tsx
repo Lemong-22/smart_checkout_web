@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { AlertCircle, Camera, Loader2, Scan } from 'lucide-react';
+import { AlertCircle, Camera, Loader2, Scan, SwitchCamera } from 'lucide-react';
 import { useImageModel } from '../hooks/useImageModel';
 import type { AIScanResult } from '../types';
 
@@ -10,7 +10,7 @@ interface CameraViewProps {
 }
 
 export const CameraView = ({ onScan, scanStatus = 'scanning', scanProgress = 0 }: CameraViewProps) => {
-  const { prediction, isLoading, error, videoRef, canvasRef } = useImageModel();
+  const { prediction, isLoading, error, videoRef, canvasRef, flipCamera, facingMode } = useImageModel();
 
   useEffect(() => {
     if (onScan && prediction) {
@@ -79,9 +79,19 @@ export const CameraView = ({ onScan, scanStatus = 'scanning', scanProgress = 0 }
         <span className="tracking-wider">LIVE</span>
       </div>
 
-      <div className="absolute top-6 right-6 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-full text-xs font-bold flex items-center space-x-2 shadow-lg backdrop-blur-sm">
-        <Scan className="w-4 h-4" />
-        <span className="tracking-wider">AI VISION</span>
+      <div className="absolute top-6 right-6 flex items-center space-x-3">
+        <button
+          onClick={flipCamera}
+          className="bg-slate-900/80 backdrop-blur-md border border-white/20 text-white p-3 rounded-full hover:bg-slate-800 transition-all duration-200 hover:scale-110 active:scale-95 shadow-lg"
+          title={`Switch to ${facingMode === 'user' ? 'back' : 'front'} camera`}
+          aria-label="Flip camera"
+        >
+          <SwitchCamera className="w-5 h-5" />
+        </button>
+        <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-full text-xs font-bold flex items-center space-x-2 shadow-lg backdrop-blur-sm">
+          <Scan className="w-4 h-4" />
+          <span className="tracking-wider">AI VISION</span>
+        </div>
       </div>
 
       <div className="absolute inset-8 pointer-events-none">

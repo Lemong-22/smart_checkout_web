@@ -9,12 +9,15 @@ interface UseImageModelReturn {
   error: string | null;
   videoRef: React.RefObject<HTMLVideoElement | null>;
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
+  flipCamera: () => void;
+  facingMode: 'user' | 'environment';
 }
 
 export const useImageModel = (): UseImageModelReturn => {
   const [prediction, setPrediction] = useState<AIScanResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -45,7 +48,7 @@ export const useImageModel = (): UseImageModelReturn => {
           video: {
             width: { ideal: 1280 },
             height: { ideal: 720 },
-            facingMode: 'user'
+            facingMode: facingMode
           }
         });
 
@@ -81,7 +84,7 @@ export const useImageModel = (): UseImageModelReturn => {
         streamRef.current.getTracks().forEach(track => track.stop());
       }
     };
-  }, []);
+  }, [facingMode]);
 
   useEffect(() => {
     if (streamRef.current && videoRef.current && !isLoading && modelRef.current) {
@@ -182,11 +185,17 @@ export const useImageModel = (): UseImageModelReturn => {
     predict();
   };
 
+  const flipCamera = () => {
+    setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
+  };
+
   return {
     prediction,
     isLoading,
     error,
     videoRef,
     canvasRef,
+    flipCamera,
+    facingMode,
   };
 };
