@@ -65,13 +65,13 @@ export const CameraView = ({ onScan, scanStatus = 'scanning', scanProgress = 0 }
         playsInline
         muted
         className="w-full h-full object-cover"
-        style={{ transform: 'scaleX(-1)' }}
+        style={{ transform: facingMode === 'user' ? 'scaleX(1)' : 'scaleX(-1)' }}
       />
       
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-        style={{ transform: 'scaleX(-1)' }}
+        style={{ transform: facingMode === 'user' ? 'scaleX(1)' : 'scaleX(-1)' }}
       />
 
       <div className="absolute top-6 left-6 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-full text-xs font-bold flex items-center space-x-2 shadow-lg backdrop-blur-sm">
