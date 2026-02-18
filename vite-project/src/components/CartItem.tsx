@@ -1,4 +1,4 @@
-import { Minus, Plus, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import type { CartItem as CartItemType } from '../types';
 import { formatCurrency } from '../utils/currency';
 
